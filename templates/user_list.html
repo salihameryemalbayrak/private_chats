@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kullanıcı Listesi</title>
 </head>
 <body>
-    <h1>Hoş Geldin, {{ username }}</h1>
-    <h2>Kullanıcı Listesi</h2>
+    <h2>Kullanıcılar</h2>
     <ul>
-        {% for user, user_id in users.items() %}
-            <li><a href="{{ url_for('private_chat', target_user=user) }}">{{ user }}</a></li>
+        {% for user_id, user_name in users.items() %}
+            <li><a href="{{ url_for('private_chat', target_user_id=user_id) }}">{{ user_name }}</a></li>
         {% endfor %}
     </ul>
+    <p><a href="{{ url_for('home') }}">Çıkış Yap</a></p>
 </body>
 </html>

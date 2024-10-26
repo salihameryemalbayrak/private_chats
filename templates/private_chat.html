@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ target_user }} ile Özel Sohbet</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <h1>{{ target_user }} ile Sohbet</h1>
+    <div id="messages">
+        {% for message in messages %}
+            <p><strong>{{ message.name }}:</strong> {{ message.message }}</p>
+        {% endfor %}
+    </div>
+
+    <input id="message_input" type="text" placeholder="Mesajınızı yazın...">
+    <button id="send_button">Gönder</button>
+
+    <script>
+        const roomID = "{{ room_id }}";
+        const socket = io();
+
+        socket.emit("join", { room_id: roomID });
+
+        document.getElementById('send_button').onclick = function() {
+            const messageInput = document.getElementById('message_input');
+            const message = messageInput.value;
+            if (message) {
+                socket.emit('message', { message: message });
+                messageInput.value = ''; // Mesaj kutusunu temizle
+            }
+        };
+
+        socket.on('message', function(data) {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML += `<p><strong>${data.name}:</strong> ${data.message}</p>`;
+        });
+    </script>
+</body>
+</html>
